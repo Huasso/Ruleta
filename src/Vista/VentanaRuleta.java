@@ -22,14 +22,14 @@ public class VentanaRuleta extends JFrame {
 
 
     private final RuletaController ruletaController;
-    private final ResultadoController resultadoController;
+
     private final SessionController sc;
 
-    public VentanaRuleta(VentanaMenu menu, ResultadoController resultadoController, RuletaController ruletaController, SessionController sc) {
+    public VentanaRuleta(VentanaMenu menu, RuletaController ruletaController, SessionController sc) {
         super("Jugar Ruleta - " + sc.getNombreUsuario());
         this.ventanaMenu = menu;
         this.ruletaController = ruletaController;
-        this.resultadoController = resultadoController;
+
         this.sc = sc;
         configurarComponentes();
         configurarVentana();
@@ -108,7 +108,7 @@ public class VentanaRuleta extends JFrame {
         lblSaldo.setText("Saldo: $" + ruletaController.getSaldo());
 
         // Actualizar el JTextArea con el historial reciente
-        List<Resultado> historial = ruletaController.getResultadoController().getHistorialReciente(7);
+        List<Resultado> historial = ruletaController.getHistorialReciente(7);
         txtHistorial.setText("");
         txtHistorial.append("--- Últimas Rondas ---\n");
         if (historial.isEmpty()) {

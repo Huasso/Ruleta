@@ -4,22 +4,26 @@ import Modelo.Ruleta;
 import Modelo.Resultado;
 import Modelo.TipoApuesta;
 
-public class RuletaController {
-    private final Ruleta motorRuleta;
-    private final ResultadoController resultadoController;
+import java.util.List;
 
-    public RuletaController(ResultadoController resultadoController) {
+public class RuletaController {
+    private final SessionController sessionController;
+
+    public RuletaController(SessionController sessionController) {
         // Inicia el motor de juego con el saldo por defecto de la aplicación (1000)
-        this.motorRuleta = new Ruleta(1000);
-        this.resultadoController = resultadoController;
+        this.sessionController = sessionController;
+    }
+
+    private Ruleta getMotorRuletaActual() {
+        return sessionController.getUsuarioActual().getMotorRuleta();
     }
 
     public int getSaldo() {
-        return motorRuleta.getSaldo();
+        return getMotorRuletaActual().getSaldo();
     }
 
     public void depositar(int monto) {
-        motorRuleta.depositar(monto);
+        getMotorRuletaActual().depositar(monto);
     }
 
     /**
@@ -27,6 +31,8 @@ public class RuletaController {
      * @return El objeto Resultado de la ronda.
      */
     public Resultado jugarRonda(TipoApuesta apuesta, int monto) {
+        Ruleta motorRuleta = getMotorRuletaActual();//Ruleta actual del usuario
+
         if (monto > motorRuleta.getSaldo()) {
             throw new IllegalArgumentException("Saldo insuficiente.");
         }
@@ -39,12 +45,18 @@ public class RuletaController {
         Resultado resultado = new Resultado(numeroGanador, apuesta, monto, acierto, motorRuleta.getSaldo());
 
         // Registrar en el historial
-        resultadoController.registrarResultado(resultado);
+        sessionController.getUsuarioActual().agregarResultado(resultado);
 
         return resultado;
     }
 
-    public ResultadoController getResultadoController() {
-        return resultadoController;
+    public List<Resultado> getHistorialReciente(int maxRondas) {
+        List<Resultado> historialCompleto = sessionController.getUsuarioActual().getHistorialResultados();
+        int max = Math.min(maxRondas, historialCompleto.size());
+        return historialCompleto.subList(0, max);
+    }
+
+    public List<Resultado> getHistorialCompleto() {
+        return sessionController.getUsuarioActual().getHistorialResultados();
     }
 }

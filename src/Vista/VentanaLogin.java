@@ -10,18 +10,17 @@ import java.awt.*;
 public class VentanaLogin extends JFrame {
     private final SessionController sessionController;
     private final RuletaController ruletaController;
-    private final ResultadoController resultadoController;
+
 
     private final JTextField txtUsuario = new JTextField(15);
     private final JPasswordField txtClave = new JPasswordField(15);
     private final JButton btnIngresar = new JButton("Iniciar Sesión");
     private final JButton btnRegistro = new JButton("Registrar");
 
-    public VentanaLogin(SessionController sc, RuletaController rc, ResultadoController resultadoController) {
+    public VentanaLogin(SessionController sc, RuletaController rc) {
         super("Login Casino Black Cat");
         this.sessionController = sc;
         this.ruletaController = rc;
-        this.resultadoController = resultadoController;
         configurarComponentes();
         configurarVentana();
         agregarEventos();
@@ -73,7 +72,7 @@ public class VentanaLogin extends JFrame {
     }
 
     private void abrirMenu() {
-        VentanaMenu menu = new VentanaMenu(this, sessionController, ruletaController,resultadoController);
+        VentanaMenu menu = new VentanaMenu(this, this.sessionController, this.ruletaController);
         menu.mostrarVentana();
         this.setVisible(false);
     }

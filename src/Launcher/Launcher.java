@@ -15,13 +15,12 @@ public class Launcher {
      */
     public static void main(String[] args) {
         // 1. Inicializar Modelos y Controladores
-        ResultadoController resultadoController = new ResultadoController();
-        RuletaController ruletaController = new RuletaController(resultadoController);
         SessionController sessionController = new SessionController();
+        RuletaController ruletaController = new RuletaController(sessionController);
 
         // 2. Iniciar la Vista (VentanaLogin)
 
-            VentanaLogin login = new VentanaLogin(sessionController, ruletaController, resultadoController);
+            VentanaLogin login = new VentanaLogin(sessionController, ruletaController);
             login.mostrarVentana();
 
     }

@@ -12,7 +12,7 @@ import java.util.List;
 public class VentanaHistorial extends JFrame {
     private final VentanaMenu ventanaMenu;
     private final SessionController sessionController;
-    private final ResultadoController resultadoController; // Controlador para obtener el historial
+    private final RuletaController ruletaController; // Controlador para obtener el historial
 
     private final JTextArea txtHistorialCompleto = new JTextArea(20, 50);
     private final JButton btnVolver = new JButton("Volver al Menú");
@@ -22,7 +22,7 @@ public class VentanaHistorial extends JFrame {
         this.ventanaMenu = menu;
         this.sessionController = sc;
         // Obtenemos el ResultadoController a través de RuletaController
-        this.resultadoController = rc.getResultadoController();
+        this.ruletaController = rc;
 
         configurarComponentes();
         configurarVentana();
@@ -64,7 +64,7 @@ public class VentanaHistorial extends JFrame {
      */
     private void cargarHistorial() {
         // En este caso, solicitamos todos los resultados almacenados
-        List<Resultado> historial = resultadoController.getHistorialReciente(resultadoController.getHistorialSize());
+        List<Resultado> historial = ruletaController.getHistorialCompleto();
 
         txtHistorialCompleto.setText(""); // Limpiar el área de texto
 

@@ -10,7 +10,6 @@ public class VentanaMenu extends JFrame {
     private final VentanaLogin ventanaLogin;
     private final SessionController sessionController;
     private final RuletaController ruletaController;
-    private final ResultadoController resultadoController;
 
     private final JLabel lblBienvenida = new JLabel();
     private final JButton btnJugar = new JButton("Jugar Ruleta");
@@ -18,12 +17,11 @@ public class VentanaMenu extends JFrame {
     private final JButton btnSalir = new JButton("Cerrar Sesión");
     private final JButton btnHistorial = new JButton("Historial");
 
-    public VentanaMenu(VentanaLogin login, SessionController sc, RuletaController rc, ResultadoController resultadoController) {
+    public VentanaMenu(VentanaLogin login, SessionController sc, RuletaController rc ) {
         super("Menú Principal - Casino Black Cat");
         this.ventanaLogin = login;
         this.sessionController = sc;
         this.ruletaController = rc;
-        this.resultadoController= resultadoController;
         configurarComponentes();
         configurarVentana();
         agregarEventos();
@@ -62,7 +60,7 @@ public class VentanaMenu extends JFrame {
     }
 
     private void abrirRuleta() {
-        VentanaRuleta ruleta = new VentanaRuleta(this, resultadoController ,ruletaController, sessionController);
+        VentanaRuleta ruleta = new VentanaRuleta(this, ruletaController, sessionController);
         ruleta.mostrarVentana();
         this.setVisible(false);
     }

@@ -1,6 +1,7 @@
 package Modelo;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 
@@ -10,6 +11,7 @@ public class Usuario {
     private final String password;
     private String nombre;
 
+    private final Ruleta motorRuleta;
     //Asociacion 1 a  muchos de Resultado
     private List<Resultado> historialResultados;
     /*
@@ -21,6 +23,7 @@ public class Usuario {
         this.nombre = nombre;
 
         this.historialResultados = new ArrayList<>();
+        this.motorRuleta = new Ruleta(1000);
     }
 
     /**
@@ -31,13 +34,12 @@ public class Usuario {
     }
 
     public void agregarResultado(Resultado resultado) {
-        if (resultado != null) {
-            historialResultados.add(resultado);
-        }
+        this.historialResultados.addFirst(resultado);
+
     }
 
     public void limpiarHistorial() {
-        historialResultados.clear();
+        this.historialResultados.clear();
     }
 
     // Getters y Setters
@@ -48,9 +50,15 @@ public class Usuario {
     public String getNombre() {
         return nombre;
     }
+
     public List<Resultado> getHistorialResultados() {
         return historialResultados;
     }
+
+    public Ruleta getMotorRuleta() {
+        return motorRuleta;
+    }
+
 
     /**
      * Setter validado para el nombre del usuario.
