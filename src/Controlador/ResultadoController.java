@@ -20,4 +20,8 @@ public class ResultadoController {
         return historial.subList(0, max);
     }
 
+    public int getHistorialSize() {
+        return historial.size();
+    }
+
 }

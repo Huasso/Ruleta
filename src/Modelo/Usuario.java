@@ -1,18 +1,26 @@
 package Modelo;
 
+import java.util.ArrayList;
+import java.util.List;
+
+
 public class Usuario {
     // Atributos privados (Encapsulamiento total)
     private final String username;
     private final String password;
     private String nombre;
 
-    /**
+    //Asociacion 1 a  muchos de Resultado
+    private List<Resultado> historialResultados;
+    /*
      * Constructor para inicializar un nuevo usuario.
      */
     public Usuario(String username, String password, String nombre) {
         this.username = username;
         this.password = password;
         this.nombre = nombre;
+
+        this.historialResultados = new ArrayList<>();
     }
 
     /**
@@ -22,6 +30,16 @@ public class Usuario {
         return this.username.equals(u) && this.password.equals(p);
     }
 
+    public void agregarResultado(Resultado resultado) {
+        if (resultado != null) {
+            historialResultados.add(resultado);
+        }
+    }
+
+    public void limpiarHistorial() {
+        historialResultados.clear();
+    }
+
     // Getters y Setters
     public String getUsername() {
         return username;
@@ -29,6 +47,9 @@ public class Usuario {
 
     public String getNombre() {
         return nombre;
+    }
+    public List<Resultado> getHistorialResultados() {
+        return historialResultados;
     }
 
     /**

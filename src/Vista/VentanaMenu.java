@@ -16,6 +16,7 @@ public class VentanaMenu extends JFrame {
     private final JButton btnJugar = new JButton("Jugar Ruleta");
     private final JButton btnVerPerfil = new JButton("Ver Perfil");
     private final JButton btnSalir = new JButton("Cerrar Sesión");
+    private final JButton btnHistorial = new JButton("Historial");
 
     public VentanaMenu(VentanaLogin login, SessionController sc, RuletaController rc, ResultadoController resultadoController) {
         super("Menú Principal - Casino Black Cat");
@@ -40,7 +41,7 @@ public class VentanaMenu extends JFrame {
 
         panelMenu.add(btnJugar);
         panelMenu.add(btnVerPerfil);
-        panelMenu.add(new JButton("Historial (Pendiente)")); // Placeholder
+        panelMenu.add(btnHistorial);
         panelMenu.add(btnSalir);
 
         this.add(panelMenu, BorderLayout.WEST);
@@ -57,6 +58,7 @@ public class VentanaMenu extends JFrame {
         btnJugar.addActionListener(e -> abrirRuleta());
         btnVerPerfil.addActionListener(e -> abrirPerfil());
         btnSalir.addActionListener(e -> cerrarSesion());
+        btnHistorial.addActionListener(event-> abrirHistorial());
     }
 
     private void abrirRuleta() {
@@ -68,6 +70,12 @@ public class VentanaMenu extends JFrame {
     private void abrirPerfil() {
         VentanaPerfil perfil = new VentanaPerfil(this, sessionController, ruletaController);
         perfil.mostrarVentana();
+        this.setVisible(false);
+    }
+
+    private void abrirHistorial() {
+        VentanaHistorial historial = new VentanaHistorial(this, sessionController, ruletaController);
+        historial.mostrarVentana();
         this.setVisible(false);
     }
 
