@@ -1,5 +1,6 @@
 package Controlador;
 
+import Modelo.Estadisticas;
 import Modelo.Ruleta;
 import Modelo.Resultado;
 import Modelo.TipoApuesta;
@@ -58,5 +59,12 @@ public class RuletaController {
 
     public List<Resultado> getHistorialCompleto() {
         return sessionController.getUsuarioActual().getHistorialResultados();
+    }
+
+    public Estadisticas calcularEstadisticasUsuario() {
+        // 1. Obtiene el historial del usuario actual
+        List<Resultado> historial = sessionController.getUsuarioActual().getHistorialResultados();
+
+        return new Estadisticas(historial);
     }
 }

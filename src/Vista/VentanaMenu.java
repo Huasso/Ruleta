@@ -16,6 +16,7 @@ public class VentanaMenu extends JFrame {
     private final JButton btnVerPerfil = new JButton("Ver Perfil");
     private final JButton btnSalir = new JButton("Cerrar Sesión");
     private final JButton btnHistorial = new JButton("Historial");
+    private final JButton btnEstadisticas = new JButton("Estadísticas");
 
     public VentanaMenu(VentanaLogin login, SessionController sc, RuletaController rc ) {
         super("Menú Principal - Casino Black Cat");
@@ -40,6 +41,7 @@ public class VentanaMenu extends JFrame {
         panelMenu.add(btnJugar);
         panelMenu.add(btnVerPerfil);
         panelMenu.add(btnHistorial);
+        panelMenu.add(btnEstadisticas);
         panelMenu.add(btnSalir);
 
         this.add(panelMenu, BorderLayout.WEST);
@@ -57,6 +59,7 @@ public class VentanaMenu extends JFrame {
         btnVerPerfil.addActionListener(e -> abrirPerfil());
         btnSalir.addActionListener(e -> cerrarSesion());
         btnHistorial.addActionListener(event-> abrirHistorial());
+        btnEstadisticas.addActionListener(e -> abrirEstadisticas());
     }
 
     private void abrirRuleta() {
@@ -90,5 +93,12 @@ public class VentanaMenu extends JFrame {
     public void actualizarBienvenida() {
         lblBienvenida.setText("<html><h1>Bienvenido/a, " + sessionController.getNombreUsuario() + "</h1>" +
                 "<p>Saldo actual: $" + ruletaController.getSaldo() + "</p></html>");
+    }
+
+    private void abrirEstadisticas() {
+        // Le pasamos los controladores necesarios
+        VentanaEstadisticas stats = new VentanaEstadisticas(this, ruletaController);
+        stats.mostrarVentana();
+        this.setVisible(false);
     }
 }

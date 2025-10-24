@@ -24,6 +24,7 @@ public class Resultado {
     public int getMonto() { return monto; }
     public boolean isAcierto() { return acierto; }
     public int getSaldoFinal() { return saldoFinal; }
+    public TipoApuesta getTipoApuesta() { return apuestaRealizada; }
 
     // Métdo utilitario para el historial
     @Override
@@ -36,4 +37,5 @@ public class Resultado {
         return String.format("Número: %d (%s) | Apuesta: %s | Monto: $%d | %s | Saldo: $%d",
                 numeroGanador, tipoInfo, apuestaRealizada, monto, (acierto ? "GANASTE" : "PERDISTE"), saldoFinal);
     }
+
 }
