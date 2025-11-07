@@ -1,6 +1,8 @@
 package Controlador;
 
+import Modelo.IRepositorioResultados;
 import Modelo.Usuario;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -9,12 +11,15 @@ public class SessionController {
     private static final List<Usuario> USUARIOS = new ArrayList<>();
     private Usuario usuarioActual;
 
-    public SessionController() {
-        // Inicialización de usuarios fijos
+    private final IRepositorioResultados repositorioResultados;
+
+    public SessionController(IRepositorioResultados repositorio) {
+        this.repositorioResultados = repositorio;
+
         if (USUARIOS.isEmpty()) {
-            USUARIOS.add(new Usuario("admin", "1234", "Don Donnie"));
-            USUARIOS.add(new Usuario("jugador", "1111", "Jugador Pro"));
-            USUARIOS.add(new Usuario("invitado", "0000", "Invitado del Casino"));
+            USUARIOS.add(new Usuario("admin", "1234", "Don Donnie", this.repositorioResultados));
+            USUARIOS.add(new Usuario("jugador", "1111", "Jugador Pro", this.repositorioResultados));
+            USUARIOS.add(new Usuario("invitado", "0000", "Invitado del Casino", this.repositorioResultados));
         }
     }
 
@@ -62,11 +67,11 @@ public class SessionController {
         if (u == null || u.isBlank() || p == null || p.isBlank() || n == null || n.isBlank()) {
             throw new IllegalArgumentException("Todos los datos son requeridos.");
         }
-        // Validar si el usuario ya existe (simple, por username)
+
         if (USUARIOS.stream().anyMatch(user -> user.getUsername().equals(u))) {
             throw new IllegalArgumentException("El usuario ya existe.");
         }
 
-        USUARIOS.add(new Usuario(u, p, n));
+        USUARIOS.add(new Usuario(u, p, n, repositorioResultados));
     }
 }

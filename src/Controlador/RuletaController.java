@@ -1,9 +1,6 @@
 package Controlador;
 
-import Modelo.Estadisticas;
-import Modelo.Ruleta;
-import Modelo.Resultado;
-import Modelo.ApuestaBase;
+import Modelo.*;
 
 import java.util.List;
 
@@ -27,6 +24,9 @@ public class RuletaController {
         getMotorRuletaActual().depositar(monto);
     }
 
+    private IRepositorioResultados getRepositorio() {
+        return sessionController.getUsuarioActual().getRepositorioResultados();
+    }
 
     public Resultado jugarRonda(ApuestaBase apuesta) {
         Ruleta motorRuleta = getMotorRuletaActual();
@@ -44,24 +44,24 @@ public class RuletaController {
 
         Resultado resultado = new Resultado(numeroGanador, apuesta, acierto, motorRuleta.getSaldo());
 
-        sessionController.getUsuarioActual().agregarResultado(resultado);
+        getRepositorio().guardarResultado(resultado);
 
         return resultado;
     }
 
     public List<Resultado> getHistorialReciente(int maxRondas) {
-        List<Resultado> historialCompleto = sessionController.getUsuarioActual().getHistorialResultados();
+        List<Resultado> historialCompleto = getRepositorio().obtenerTodos();
         int max = Math.min(maxRondas, historialCompleto.size());
         return historialCompleto.subList(0, max);
     }
 
     public List<Resultado> getHistorialCompleto() {
-        return sessionController.getUsuarioActual().getHistorialResultados();
+        return getRepositorio().obtenerTodos();
     }
 
 
     public Estadisticas calcularEstadisticasUsuario() {
-        List<Resultado> historial = sessionController.getUsuarioActual().getHistorialResultados();
+        List<Resultado> historial = getRepositorio().obtenerTodos();
 
         return new Estadisticas(historial);
     }
