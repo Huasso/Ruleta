@@ -2,7 +2,6 @@ package Vista;
 
 import Controlador.RuletaController;
 import Controlador.SessionController;
-import Controlador.ResultadoController; // Necesitamos el controlador de resultados
 import Modelo.Resultado;
 
 import javax.swing.*;

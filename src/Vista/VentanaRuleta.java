@@ -2,16 +2,19 @@ package Vista;
 
 import Controlador.RuletaController;
 import Controlador.SessionController;
-import Controlador.ResultadoController;
 import Modelo.Resultado;
-import Modelo.TipoApuesta;
+import Modelo.ApuestaBase;
+import Modelo.ApuestaRojo;
+import Modelo.ApuestaNegro;
+import Modelo.ApuestaPar;
+import Modelo.ApuestaImpar;
 
 import javax.swing.*;
 import java.awt.*;
 import java.util.List;
 
 public class VentanaRuleta extends JFrame {
-    private final VentanaMenu ventanaMenu;
+
     private final JComboBox<String> cmbTipoApuesta = new JComboBox<>(new String[]{"Color", "Paridad"});
     private final JComboBox<String> cmbOpcionApuesta = new JComboBox<>(new String[]{"ROJO", "NEGRO"});
     private final JTextField txtMonto = new JTextField("100", 5);
@@ -20,9 +23,8 @@ public class VentanaRuleta extends JFrame {
     private final JTextArea txtHistorial = new JTextArea(7, 40);
     private final JButton btnVolver = new JButton("Volver al Menú");
 
-
+    private final VentanaMenu ventanaMenu;
     private final RuletaController ruletaController;
-
     private final SessionController sc;
 
     public VentanaRuleta(VentanaMenu menu, RuletaController ruletaController, SessionController sc) {
@@ -34,7 +36,7 @@ public class VentanaRuleta extends JFrame {
         configurarComponentes();
         configurarVentana();
         agregarEventos();
-        actualizarVista(null); // Actualiza la vista inicial (saldo e historial)
+        actualizarVista(null);
     }
 
     private void configurarComponentes() {
@@ -75,11 +77,11 @@ public class VentanaRuleta extends JFrame {
         cmbOpcionApuesta.removeAllItems();
 
         if ("Color".equals(tipo)) {
-            cmbOpcionApuesta.addItem(TipoApuesta.ROJO.name());
-            cmbOpcionApuesta.addItem(TipoApuesta.NEGRO.name());
+            cmbOpcionApuesta.addItem("ROJO");
+            cmbOpcionApuesta.addItem("NEGRO");
         } else if ("Paridad".equals(tipo)) {
-            cmbOpcionApuesta.addItem(TipoApuesta.PAR.name());
-            cmbOpcionApuesta.addItem(TipoApuesta.IMPAR.name());
+            cmbOpcionApuesta.addItem("PAR");
+            cmbOpcionApuesta.addItem("IMPAR");
         }
     }
 
@@ -88,8 +90,16 @@ public class VentanaRuleta extends JFrame {
             int monto = Integer.parseInt(txtMonto.getText());
             String opcionStr = (String) cmbOpcionApuesta.getSelectedItem();
 
-            // Llama al controlador para ejecutar toda la lógica
-            Resultado resultado = ruletaController.jugarRonda(TipoApuesta.valueOf(opcionStr), monto);
+            ApuestaBase apuesta;
+            switch (opcionStr) {
+                case "ROJO": apuesta = new ApuestaRojo(monto); break;
+                case "NEGRO": apuesta = new ApuestaNegro(monto); break;
+                case "PAR": apuesta = new ApuestaPar(monto); break;
+                case "IMPAR": apuesta = new ApuestaImpar(monto); break;
+                default: throw new IllegalArgumentException("Opción de apuesta no válida.");
+            }
+
+            Resultado resultado = ruletaController.jugarRonda(apuesta);
 
             actualizarVista(resultado);
 
@@ -101,13 +111,11 @@ public class VentanaRuleta extends JFrame {
         }
     }
 
-    /**
-     * Actualiza el saldo y el historial en la interfaz.
-     */
+
     private void actualizarVista(Resultado resultadoRonda) {
         lblSaldo.setText("Saldo: $" + ruletaController.getSaldo());
 
-        // Actualizar el JTextArea con el historial reciente
+
         List<Resultado> historial = ruletaController.getHistorialReciente(7);
         txtHistorial.setText("");
         txtHistorial.append("--- Últimas Rondas ---\n");
@@ -119,7 +127,6 @@ public class VentanaRuleta extends JFrame {
             }
         }
 
-        // Actualiza el saldo en el menú principal
         ventanaMenu.actualizarBienvenida();
     }
 

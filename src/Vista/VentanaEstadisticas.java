@@ -25,13 +25,12 @@ public class VentanaEstadisticas extends JFrame {
         configurarComponentes();
         configurarVentana();
         agregarEventos();
-        cargarDatos(); // Cargar los datos al iniciar
+        cargarDatos();
     }
 
     private void configurarComponentes() {
         setLayout(new BorderLayout(10, 10));
 
-        // Panel para mostrar las métricas
         JPanel panelMetricas = new JPanel(new GridLayout(5, 1, 10, 10));
         panelMetricas.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
 
@@ -60,23 +59,20 @@ public class VentanaEstadisticas extends JFrame {
         btnVolver.addActionListener(e -> volverMenu());
     }
 
-    /**
-     * Llama al controlador, obtiene las estadísticas actualizadas y las muestra.
-     */
     private void cargarDatos() {
-        // Llama al controlador para que calcule las estadísticas del usuario actual
         Estadisticas stats = ruletaController.calcularEstadisticasUsuario();
 
         lblTotalJugadas.setText("Total Jugadas: " + stats.getTotalJugadas());
         lblVictorias.setText("Victorias: " + stats.getVictorias());
 
-        // Formatear el porcentaje para que se vea bien
         lblPorcentajeVictorias.setText(String.format("Porcentaje Victoria: %.2f%%", stats.getPorcentajeVictorias()));
 
         lblRachaMaxima.setText("Racha Máxima: " + stats.getRachaMaxima());
 
-        // El TipoApuesta es un ENUM, se usa el méthodo name() para el String
-        String tipo = (stats.getTipoMasJugado() != null) ? stats.getTipoMasJugado().name() : "N/A";
+        String tipo = stats.getTipoMasJugado();
+        if (tipo == null || tipo.isBlank() || tipo.equals("N/A")) {
+            tipo = "N/A";
+        }
         lblTipoMasJugado.setText("Tipo Más Jugado: " + tipo);
     }
 
